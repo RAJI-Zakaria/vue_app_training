@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="data.min.js"></script>
+</head>
+<body>
+
+<div id="div"></div>
+<script>
+    // Vanilla
+    document.addEventListener("DOMContentLoaded", function() {
+        var xd = "";
+        // var header = [
+        //     'Livre',
+        //     'Name',
+        //     'Ecole',
+        //     'Branches',
+        //     'Classes',
+        //     'Composantes',
+        //     'Temps d\'incantation',
+        //     'Portée',
+        //     'Cible',
+        //     'Durée',
+        //     'Jet de sauvegarde',
+        //     'Résistance à la magie',
+        //     'Description',
+        //     'Nécessaire',
+        // ];
+
+
+        var header = [
+            'book',
+            'name',
+            'school',
+            'branches',
+            'class',
+            'components',
+            'castingTime',
+            'scope',
+            'target',
+            'duration',
+            'savingThrow',
+            'magicResistance',
+            'description',
+            'necessary',
+        ];
+
+    //         "MJ",Livre
+    //         "Abri",Name
+    //         "Evocation",Ecole
+    //         new Array("Force"),Branches
+    //         new Array(new Array("Barde",3), new Array("Magicien",3)),Classes
+    //         new Array("V","G","M"),Composantes
+    //         "1 action simple", Temps d'incantation
+        //      "6 m", Portée
+    //         "Effet : sphère de 6 m de rayon centrée sur la position du personnage",Cible
+        //     "2 heures/niveau (T)",Durée
+    //         "Aucun",Jet de sauvegarde
+    //         "Non", Résistance à la magie
+    //         "Lorsqu'il lance ce s bénéficient d'un camouflage total).",  Description
+    //         "Composante matérielle : une petite perle de cristal qui éclate quand le sort s'achève ou quand le personnage y met un terme." Nécessaire
+    // ),
+var xd = "[";
+for(i = 0; i<sortTable.length;i++){
+
+    xd+="{";
+    for(j=0;j<sortTable[i].length;j++){
+        var data_ooo = sortTable[i][j].toString().replace(new RegExp('\r?\n','g'), '<br />');
+         data_ooo = sortTable[i][j].toString().replaceAll('"', "-");
+         console.log(data_ooo);
+        //here i am going to check if the xurrent header is an array or not and if the inside values are also an array or not
+        var quote = "\"";
+        if( Array.isArray(sortTable[i][j]) && sortTable[i][j].length!=0){
+            data_ooo="";
+            data_ooo+="[ ";
+            for(k=0;k<sortTable[i][j].length;k++){
+                if(Array.isArray(sortTable[i][j][k]) && sortTable[i][j][k].length!=0){
+
+
+                       data_ooo+="{";
+                       data_ooo+= '"class_name" : "'+sortTable[i][j][k][0]+'", ';
+                       data_ooo+= '"level" : "'+sortTable[i][j][k][1]+'"';
+                       data_ooo+="}";
+
+
+
+
+
+
+
+
+
+
+                }else{
+
+                    data_ooo='"'+header[j]+'" : ';
+                    data_ooo="[ ";
+
+                        data_ooo+= sortTable[i][j].map(x => "\"" + x + "\"").toString();
+
+
+
+
+
+                }
+
+                data_ooo+=",";
+
+
+
+            }
+
+            //deleting the last generated comma
+            data_ooo = data_ooo.slice(0, -1);
+
+            data_ooo+="] ";
+
+
+
+
+            quote="";
+        }else{
+            quote="\"";
+        }
+
+
+        //changing \n with <br>
+        xd+=  '"'+header[j]+'" : '+ quote +data_ooo+ quote;
+
+            xd+=",";
+
+
+
+    }
+    //deleting the last generated comma
+    xd = xd.slice(0, -1);
+    xd+="}";
+
+        xd+=",";
+
+}
+        xd = xd.slice(0, -1);
+        xd+="]";
+        document.getElementById("div").innerHTML="<code>"+xd+"</code>";
+    });
+</script>
+</body>
+</html>
+
+
