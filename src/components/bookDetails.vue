@@ -1,5 +1,5 @@
 <template>
-                <div>
+                <div class="description">
                     <b>book</b> : {{single_book.book}}<br>
                     <b>school</b> : {{single_book.school}}<br>
                     <b>branches</b> :  <Branches v-bind:branches="single_book.branches"/> <br>
@@ -45,9 +45,10 @@
 </script>
 
 <style scoped>
-    li:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+   .description{
+       padding: 30px;
+       text-align: left;
+   }
 </style>
 
 

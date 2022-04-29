@@ -1,9 +1,7 @@
 <template>
-    <ul>
-        <li  v-for="branche in branches" v-bind:key="branche">
+        <div  v-for="branche in branches" v-bind:key="branche">
             {{ branche }}
-        </li>
-    </ul>
+        </div>
 </template>
 
 <script>

@@ -1,12 +1,12 @@
 <template>
-        <ul>
+        <div>
 
                 <div  v-on:click="showDetails()" class="header" >
                     <b>{{book.name}}</b>
                 </div>
                 <BookDetails  v-show="isInfosVisible" v-bind:single_book="book" />
 
-        </ul>
+        </div>
 </template>
 
 <script>
@@ -48,6 +48,7 @@
         background: #2c3e50;
         color: #fff;
         padding: 20px;
+            border-bottom: 1px solid black;
     }
 </style>
 

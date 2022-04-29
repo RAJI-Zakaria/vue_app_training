@@ -23,4 +23,18 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+
+input[type=text] {
+    width: 80%;
+    padding: 5px 10px;
+    margin: 5px;
+    box-sizing: border-box;
+}
+select {
+    width: 80%;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+}
 </style>
