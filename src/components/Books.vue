@@ -9,6 +9,12 @@
        <SelectComponent v-model="classDomain" :options="filteredClassDomain"/><br>
        <b>level : </b><br>
        <SelectComponent v-model="level" :options="filteredLevel"/><br>
+       <b>Livres : </b><br>
+       <SelectComponent v-model="livre" :options="filteredLivres"/>
+       <br><button class="btn" v-on:click="addLivreFilter">add</button><button v-on:click="deleteLivreFilter" class="btn">delete</button><br>
+       <SelectComponent v-model="filterLivre" @change="filterLivreOnChange($event)" :options="filteredSearchedLivres" multiple="true"/>
+
+
        <div v-if="filteredBooks.length"><b>Sorted Length = {{ filteredBooks.length }}</b></div><br>
            <div v-for="book in filteredBooks" :key="book" style="">
                <BookElement :book="book"/>
@@ -40,6 +46,9 @@
                 branche:'',
                 classDomain:'',
                 level:'',
+                filteredSearchedLivres: [],
+                filterLivre: ''
+
             };
         },
         computed: {
@@ -105,25 +114,74 @@
                     });
                 }
 
+                if(this.filteredSearchedLivres.length>0){
+                    result= result.filter((item)=>{
+                        for(var i=0; i< this.filteredSearchedLivres.length; i++){
+                            if(item.book == this.filteredSearchedLivres[i]){
+                                return item;
+                            }
+                        }
+                    });
+                }
+
+
 
 
                 return result;
             },
             filteredEcoles(){
-                return this.books.map(item => item.school).filter((value, index, self) => self.indexOf(value) === index);
+                var items = this.books.map(item => item.school).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
             },
             filteredBranches(){
-               return this.books.map(item => item.branches[0]).filter((value, index, self) => self.indexOf(value) === index);
+               var items = this.books.map(item => item.branches[0]).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
             },filteredClassDomain(){
-                return this.books.map(item => item.class[0].class_name).filter((value, index, self) => self.indexOf(value) === index);
+                var items = this.books.map(item => item.class[0].class_name).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
 
             },filteredLevel(){
-                return this.books.map(item => item.class[0].level).filter((value, index, self) => self.indexOf(value) === index);
+                var items = this.books.map(item => item.class[0].level).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
+
+            },filteredLivres(){
+                var items = this.books.map(item => item.book).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
+            },
+
+
+
+
+
+        },methods:{
+            addLivreFilter(){
+                return this.filteredSearchedLivres.indexOf(this.livre) === -1 ? this.filteredSearchedLivres.push(this.livre) : console.log("This item already exists");
 
             }
+            ,
+            deleteLivreFilter(){
+                var index = this.filteredSearchedLivres.indexOf(this.filterLivre);
+                return index >= 0 ? this.filteredSearchedLivres.splice(index, 1) : console.log("This item doesn't exist");
 
-
-
+            },
+            filterLivreOnChange(e){
+                this.filterLivre=e.target.value;
+            }
         }
 
     }
