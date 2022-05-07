@@ -2,8 +2,8 @@
     <label>{{title}}</label><br>
     <SelectComponent v-model="livre" :options="lst_options"/>
     <br>
-    <button class="btn" v-on:click="addLivreFilter">add</button>
-    <button v-on:click="deleteLivreFilter" class="btn">delete</button><br>
+    <button class="btn btn-success" v-on:click="addLivreFilter">add</button>
+    <button v-on:click="deleteLivreFilter" class="btn btn-danger">delete</button><br>
    <SelectComponent :options="selected_options"
            v-model="filterLivre"
         multiple="true"/>

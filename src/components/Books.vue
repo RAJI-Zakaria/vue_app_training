@@ -6,12 +6,12 @@
        <selectComponentCheck v-on:check-box-state="setLevelCheck($event)" v-on:selected-value="setLevelValue($event)" title="level" v-model="level" :lst_options="filteredLevel"/><br>
         <selectBooksComponent v-on:selected-value="setLivreValue($event)" title="Livre" v-model="livre" :lst_options="filteredLivres"/><br>
 <b>Trier par Niveau de Classe/Domaine?</b>
-    <input type="checkbox" @click="checkSortClassDomain=!checkSortClassDomain">
-    <div v-if="filteredBooks.length"><b>Sorted Length = {{ filteredBooks.length }}</b></div><br>
-           <div v-for="book in filteredBooks" :key="book" style="">
+    <input type="checkbox" @click="checkSortClassDomain=!checkSortClassDomain"><br>
+    <input class="btn btn-primary" type="button" @click="filteredBooks" value="Recherche" >
+    <div v-if="sortedBooks.length"><b>Sorted Length = {{ sortedBooks.length }}</b></div><br>
+           <div v-for="book in sortedBooks" :key="book" style="">
                <BookElement :book="book"/>
            </div>
-    <input type="button" value="Recherche" onclick="search();">
 </template>
 
 <!--       <input class="form-control" type="text" v-model="searchQuery" placeholder="Search" /><br>-->
@@ -55,7 +55,7 @@
 
             return {
                 books: _data,
-
+                sortedBooks:[],
                 //store searched words
                 searchQuery:'',
                 //is activated
@@ -96,10 +96,52 @@
         },
         computed: {
 
+            filteredEcoles(){
+                var items = this.books.map(item => item.school).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
+            },
+            filteredBranches(){
+               var items = this.books.map(item => item.branches[0]).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
+            },filteredClassDomain(){
+                var items = this.books.map(item => item.class[0].class_name).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
+
+            },filteredLevel(){
+                var items = this.books.map(item => item.class[0].level).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
+
+            },filteredLivres(){
+                var items = this.books.map(item => item.book).filter((value, index, self) => self.indexOf(value) === index);
+                items = items.sort(function (a, b) {
+                    return a.localeCompare(b); //using String.prototype.localCompare()
+                });
+                return items;
+            },
+
+
+
+
+
+        },methods:{
+
             //this is the main function to filter the data based on all activated criteria...
             filteredBooks (){
+                alert("asdf");
                 var result;
-               //storing
+                //storing
                 // if(localStorage.getItem("result") === null || JSON.parse(localStorage.getItem("result")).length<1){
                 //     result =  this.books;
                 // }else{
@@ -144,9 +186,9 @@
 
                             //checking if the level of class has been selected
                             if(this.level){
-                            if(item.class[i].class_name.toLowerCase()==this.classDomain.toLowerCase() && item.class[i].level==this.level){
-                                return item.class;
-                            }
+                                if(item.class[i].class_name.toLowerCase()==this.classDomain.toLowerCase() && item.class[i].level==this.level){
+                                    return item.class;
+                                }
                             }else{
                                 if(item.class[i].class_name.toLowerCase()==this.classDomain.toLowerCase()){
                                     return item.class;
@@ -155,7 +197,7 @@
                         }
                     });
                 }else if(this.level &&  this.isLevel){
-                     result= result.filter((item)=>{
+                    result= result.filter((item)=>{
                         for(var i=0; i< item.class.length; i++){
 
                             //checking if the level of class has been selected
@@ -179,9 +221,9 @@
                 }
 
                 if(this.checkSortClassDomain){
-                         result.sort(function(a, b) {
-                            return a.class[0] > b.class[0];
-                        });
+                    result.sort(function(a, b) {
+                        return a.class[0] > b.class[0];
+                    });
 
 
 
@@ -191,48 +233,9 @@
 
                 localStorage.setItem('result', JSON.stringify(result));
 
-                return result;
-            },
-            filteredEcoles(){
-                var items = this.books.map(item => item.school).filter((value, index, self) => self.indexOf(value) === index);
-                items = items.sort(function (a, b) {
-                    return a.localeCompare(b); //using String.prototype.localCompare()
-                });
-                return items;
-            },
-            filteredBranches(){
-               var items = this.books.map(item => item.branches[0]).filter((value, index, self) => self.indexOf(value) === index);
-                items = items.sort(function (a, b) {
-                    return a.localeCompare(b); //using String.prototype.localCompare()
-                });
-                return items;
-            },filteredClassDomain(){
-                var items = this.books.map(item => item.class[0].class_name).filter((value, index, self) => self.indexOf(value) === index);
-                items = items.sort(function (a, b) {
-                    return a.localeCompare(b); //using String.prototype.localCompare()
-                });
-                return items;
-
-            },filteredLevel(){
-                var items = this.books.map(item => item.class[0].level).filter((value, index, self) => self.indexOf(value) === index);
-                items = items.sort(function (a, b) {
-                    return a.localeCompare(b); //using String.prototype.localCompare()
-                });
-                return items;
-
-            },filteredLivres(){
-                var items = this.books.map(item => item.book).filter((value, index, self) => self.indexOf(value) === index);
-                items = items.sort(function (a, b) {
-                    return a.localeCompare(b); //using String.prototype.localCompare()
-                });
-                return items;
+                this.sortedBooks = result;
             },
 
-
-
-
-
-        },methods:{
             addLivreFilter(){
                 return this.filteredSearchedLivres.indexOf(this.livre) === -1 ? this.filteredSearchedLivres.push(this.livre) : console.log("This item already exists");
 
@@ -325,6 +328,7 @@
         color: #fff;
         padding: 20px;
     }
+
 </style>
 
 
