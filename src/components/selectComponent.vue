@@ -4,6 +4,7 @@
             {{options}}
             <option  v-for="option in options" :key="option" :value="option">{{option}}</option>
         </select>
+
 </template>
 
 <script>
